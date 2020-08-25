@@ -1,9 +1,27 @@
 from tkinter import *
 
 
-def simular():
-    Lbl.configure(text="Simulacion en proceso...")
+def getters():
+    '''-----get-----'''
+    descripcion = desc.get()
+    periodos = int(period.get())
+    esperados = int(clients.get())
+    cantidad_min = int(mcp.get())
+    cantidad_max = int(maxcp.get())
+    seleccion = int(tpp.get())
+    marcado = int(tpm.get())
+    pago = int(tppago.get())
 
+    dist = distribucion.get().split(",")
+    distribucion_arr = []
+    for i in dist:
+        distribucion_arr.append(int(i))
+
+    cajas_arr = []
+    box = cajas.get().split(",")
+    for i in box:
+        cajas_arr.append(int(i))
+    window.destroy()
 
 
 window = Tk()
@@ -33,7 +51,7 @@ distribucion = Entry(window, width=15)
 distribucion.grid(column=2, row=5)
 #Los valores se ingresan separados por comas y sin espacios
 #Hacer un separador por comas
-'''----------Clientes Esperados----------'''
+'''----------Cajas Abiertas----------'''
 Lbl5 = Label(window, text="Cajas Abiertas")
 Lbl5.grid(column=1, row=3)
 cajas = Entry(window, width=15)
@@ -72,7 +90,7 @@ tppago.grid(column=2, row=3)
 
 
 
-simularButton = Button(window, text="Simular", command=simular)
+simularButton = Button(window, text="Simular", command=getters())
 simularButton.grid(column=10, row=10)
 
 window.mainloop()
