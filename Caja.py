@@ -1,4 +1,3 @@
-import Cliente
 class Caja:
     #TP=TiempoPromedio
     def __init__(self, TPMarcadoPProd, TPPagoCliente):

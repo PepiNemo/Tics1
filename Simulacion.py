@@ -2,7 +2,7 @@ import Caja
 import Cliente
 
 
-def CajaMenorCola(Caja):
+def CajaMenorCola(Cajas):
     return 3
 
 
