@@ -1,0 +1,21 @@
+1[]Primero creamos una carpeta
+2[]Entramos con la terminal(Bash) De VSC a la carpeta
+3[]Inicializamos la carpeta comorepositorio local 
+    git init
+4[]Agregamos el origen del Repositorio a Trabajar
+    git remote add origin https://github.com/PepiNemo/Tics1
+5[]Descargamos Informacion (De las ramas) del Repositorio
+    git pull
+6[]Nos cambiamos a la Rama que queramos Descargar y se nos descargan los Documentos de la Rama
+    git checkout Matias
+
+----------2 Etapa Modificacion------------
+
+7[]Modificamos los archivos que queramos, y al finalizar movemos la carpeta completa a nuestro Carpeta local con nuestra Rama
+8[̧̧́́́́́́́]Abrimos la terminal en nuestra carpeta Local de nuestra Rama, Agregamos todos los documentos de  la carpata a nuestro Repo local
+    git checkout Felipe
+    git add .
+9[]Hacemos un Pantallazo y lo empaquetamos con un comentario para subirlo al github
+    git commit -m comentarioDelPaquete
+10[]Lo subimos a nuestra Rama del github
+    git push origin Felipe
