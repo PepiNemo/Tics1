@@ -1,11 +1,11 @@
 class Caja:
     #TP=TiempoPromedio
-    def __init__(self, TPMarcadoPProd, TPPagoCliente):
+    def __init__(self, TPMarcadoPProd, TPPagoCliente,Intervalo):
         self.Cola=[]
-        self.Temporizador=0
         self.TPMarcadoPProd=TPMarcadoPProd
         self.TPPagoCliente=TPPagoCliente
         self.Temporizador=-1
+        self.Intervalo=Intervalo
         
     def AgregarCliente(self, Clien):
         self.Cola.insert(0,Clien)
