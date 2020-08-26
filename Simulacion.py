@@ -15,7 +15,7 @@ def TemporizadorCajas(Cajas,Intervalo):
 
             # Si no tiene mas Clientes en cola Deja de Atender
             if ( len(Cajas[i].Cola)==0 ):
-                #Si la caja que estaba atendiendo no era del intervalo y ya no tiene mas Cliente, la Caja se elimina
+                #Si la caja que estaba atendiendo, no es del intervalo actual, y ya no tiene mas Cliente, la Caja se elimina
                 if(Cajas[i].Intervalo!=Intervalo):
                     Cajas.remove(i)
                 else :
@@ -103,4 +103,4 @@ for i in range(10):#i =Intervalos
 
         # Vista Caja
         # Quitar 1 segundo a los clientes Seleccionando, para dps despachar
-        TemporizadorCajas(Cajas)
+        TemporizadorCajas(Cajas,i)
