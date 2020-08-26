@@ -1,34 +1,15 @@
 from tkinter import *
 
+'''se ingresan los valores mal ingresados para tirar labels con warnings'''
 
-def getters():
-    '''-----get-----'''
-    descripcion = desc.get()
-    #periodos = (period.get())
-    esperados = int(clients.get())
-    cantidad_min = int(mcp.get())
-    cantidad_max = int(maxcp.get())
-    seleccion = int(tpp.get())
-    marcado = int(tpm.get())
-    pago = int(tppago.get())
 
-    dist = distribucion.get().split(",")
-    distribucion_arr = []
-    for i in dist:
-        distribucion_arr.append(int(i))
-    sum = 0
-    for i in distribucion_arr:
-        sum +=i
-    cajas_arr = []
-    box = cajas.get().split(",")
-    for i in box:
-        cajas_arr.append(int(i))
-    '''if(condiciones):
-            abrir denuevo la app indicando errores ingresados'''
+def warnings():
+    print("error")
 
 
 
-    window.destroy()
+def app():
+    print("Hola")
 
 window = Tk()
 window.title("Simulador Supermercado")
@@ -51,7 +32,7 @@ Lbl2.grid(column=1, row=3)
 period = Entry(window, width=15)
 period.grid(column=2, row=3)
 '''----------Clientes Esperados----------'''
-Lbl3 = Label(window, text="Periodos de tiempo")
+Lbl3 = Label(window, text="Clientes Esperados")
 Lbl3.grid(column=1, row=4)
 clients = Entry(window, width=15)
 clients.grid(column=2, row=4)
@@ -92,8 +73,10 @@ tppago = Entry(window, width=15)
 tppago.grid(column=2, row=11)
 '''--------------------------'''
 
-
-simular = Button(window, text="Simular", command=getters())
+simular = Button(window, text="Simular", command=getters)
 simular.grid(column=10, row=10)
 
 window.mainloop()
+
+def main():
+    app()
