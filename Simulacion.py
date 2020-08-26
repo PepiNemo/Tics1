@@ -2,45 +2,58 @@ import Caja
 import Cliente
 
 
-def CajaMenorCola(Cajas):
-    # Retorna el Indice de la Caja con la Fila mas Corta
-    return 3
-
-def TemporizadorClientes(ClientesSeleccionando, Cajas, IndiceCajaMasVacia, InterValo):
-    # Escribir Logica
-    # Recorrer ClientesSeleccionando y quitarle 1 segundos a su temporizador
-    # Si el temporizador llega a 0 Insertar en la caja Mas Vacia
-
-    for i in range(len(ClientesSeleccionando)):
-        if(ClientesSeleccionando[i].Temporizador <= 0):
-            Cajas[IndiceCajaMasVacia].AgregarCliente(ClientesSeleccionando[i])
-            IndiceCajaMasVacia = CajaMenorCola(Cajas)
-            # Si la caja no estaba atendiendo
-            if(Cajas[IndiceCajaMasVacia].Temporizador == -1):
-                # Que comience a atender inicializando el Temporizador
-                Cajas[IndiceCajaMasVacia].AtenderSiguienteCliente()
-
-        # Restamos los temporizadores
-        ClientesSeleccionando[i].Temporizador = ClientesSeleccionando[i].Temporizador-1
-
-def InsertarClienteCaja(IndiceClienteSelecccionando, Cajas, IndiceCajaMasVacia):
-    a=1
-
-def TemporizadorCajas(Cajas):
+def TemporizadorCajas(Cajas,Intervalo):
     for i in range(len(Cajas)):
 
         if(Cajas[i].Temporizador > 0):
             Cajas[i].Temporizador = Cajas[i].Temporizador-1
 
         elif(Cajas[i].Temporizador == 0):
-            # Si no tiene mas Clientes Deja de Atender
-            if not Cajas[i].Cola:
-                Cajas[i].Temporizador = -1
 
             # Si tiene mas clientes en cola, que Atienda al Siguiente
             Cajas[i].AtenderSiguienteCliente()
 
+            # Si no tiene mas Clientes en cola Deja de Atender
+            if ( len(Cajas[i].Cola)==0 ):
+                #Si la caja que estaba atendiendo no era del intervalo y ya no tiene mas Cliente, la Caja se elimina
+                if(Cajas[i].Intervalo!=Intervalo):
+                    Cajas.remove(i)
+                else :
+                    #Si la Caja si es del intervalo, solo deja de antender, hasta tener Clientes
+                    Cajas[i].Temporizador = -1
+            
 
+
+def TemporizadorClientes(ClientesSeleccionando, Cajas, InterValo):
+    # Escribir Logica
+    # Recorrer ClientesSeleccionando y quitarle 1 segundos a su temporizador
+    # Si el temporizador llega a 0 Insertar en la caja Mas Vacia
+
+    for i in range(len(ClientesSeleccionando)):
+
+        if(ClientesSeleccionando[i].Temporizador > 0):
+            # Restamos los temporizadores
+            ClientesSeleccionando[i].Temporizador = ClientesSeleccionando[i].Temporizador-1
+
+        elif(ClientesSeleccionando[i].Temporizador == 0):
+            #Mandamos al Cliente a la Caja con Menor Cola
+            IndiceCajaMasVacia = CajaMenorCola(Cajas, InterValo)
+            InsertarClienteCaja(i, Cajas, IndiceCajaMasVacia)
+
+
+def CajaMenorCola(Cajas, Intervalo):
+    # Retorna el Indice de la Caja con la Fila mas Corta de las Intervalo Actual
+    return 2
+
+def InsertarClienteCaja(IndiceClienteSelecccionando, Cajas, IndiceCajaMasVacia):
+    Cajas[IndiceCajaMasVacia].AgregarCliente(ClientesSeleccionando[i])
+    # Si la caja no estaba atendiendo
+    if(Cajas[IndiceCajaMasVacia].Temporizador == -1):
+        # Que comience a atender inicializando el Temporizador
+        Cajas[IndiceCajaMasVacia].AtenderSiguienteCliente()
+
+
+#----------------------------------- Input ------------------------------------------------
 # Datos Ingresados por el Cliente
 NumeroTotalClientes = 1200
 
@@ -62,15 +75,15 @@ Cajas = []
 # Almacen de clientes Seleccionando Productos
 ClientesSeleccionando = []
 for i in range(10):#i =Intervalos
+    print("Numero de intervalo :"+str(i))
     for j in range(CajasAbiertas[i]):
+        #Abre las nuevas Cajas del Intervalo Correspondiente
         NuevaCaja = Caja.Caja(TPMarcadoCajaProducto, TPPagoCliente, i)
         Cajas.append(NuevaCaja)
 
 
-    # Cada cuanto (s)entrara el siguiente cliente ("Los clientes se distribuyen de forma uniforme en el tiempo")
+    # Temporizador que indica cada cuanto entra un nuevo Cliente
     TPEntraCliente = 3600 // (NumeroTotalClientes*DistribucionPorcentual[i])
-    # Ha que caja ira el proximo Cliente
-    IndiceCajaMasVacia = CajaMenorCola(Cajas)
 
     # Empieza el tiempo de un solo Intervalo
     for z in range(3600):
@@ -78,7 +91,7 @@ for i in range(10):#i =Intervalos
 
         # Vista Clientes
 
-        # Entradas de los Clientes
+        # Cuando el temporizador TPEntraCliente llega a 0 entra un nuevo Cliente
         TPEntraCliente = TPEntraCliente-1
         if(TPEntraCliente == 0 or z == 0):  # Entra un NuevoCliente
             NuevoCliente = Cliente.Cliente(TPSeleccionProducto)
@@ -86,7 +99,7 @@ for i in range(10):#i =Intervalos
             TPEntraCliente = 3600 // (NumeroTotalClientes*DistribucionPorcentual[i])
 
         # Quitar 1 segundos a los clientes seleccionando, para dps ir a Caja (Temporizador e InsertarCliente)
-        TemporizadorClientes(ClientesSeleccionando, Cajas, IndiceCajaMasVacia, i)
+        TemporizadorClientes(ClientesSeleccionando, Cajas, i)
 
         # Vista Caja
         # Quitar 1 segundo a los clientes Seleccionando, para dps despachar
