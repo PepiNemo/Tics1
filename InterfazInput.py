@@ -14,8 +14,6 @@ def app():
 window = Tk()
 window.title("Simulador Supermercado")
 window.geometry('500x400')
-Lbl = Label(window, text="")
-Lbl.grid(column=5, row=0)
 '''----------DESCRIPCION----------'''
 Lbl1 = Label(window, text="Descripcion")
 Lbl1.grid(column=1, row=1)
