@@ -1,13 +1,14 @@
 
 
-def TemporizadorCajas(Cajas,Intervalo):
+def TemporizadorCajas(Cajas,Intervalo,ContClientesDesp):
     for i in range(len(Cajas)):
 
         if(Cajas[i].Temporizador > 0):
             Cajas[i].Temporizador = Cajas[i].Temporizador-1
 
         elif(Cajas[i].Temporizador == 0):
-
+            #Cliente ya atendido, osea despachado 
+            ContClientesDesp[0]=ContClientesDesp[0]+1
             # Si tiene mas clientes en cola, que Atienda al Siguiente
             Cajas[i].AtenderSiguienteCliente()
 
