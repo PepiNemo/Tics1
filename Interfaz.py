@@ -74,7 +74,7 @@ class Window1:
             self.destroy()
 
 
-
+#main
 
 def main():
     root = Tk()
