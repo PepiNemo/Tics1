@@ -59,19 +59,30 @@ class Window1:
         tppago.grid(column=2, row=11)
         '''--------------------------'''
 
-        btn = Button(root, text="Simular", command=self.simular)
-        btn.grid(column=10, row=10)
-    def simular(self):
-        descripcion = self.desc.get()
-        pass
+        btn = Button(root, text="Simular")
+        btn.grid(column=2, row=12)
+
+
+        def getDesc(self):
+            print(desc.get())
+            return desc.get()
+
+
+        def simular(self):
+            print("Simulando")
+            descripcion = getDesc()
+            self.destroy()
+
 
 
 
 def main():
     root = Tk()
     root.title("Simulador Supermercados")
-    root.geometry('500x400')
+    root.geometry('270x270')
     app = Window1(root)
     root.mainloop()
+
+
 if __name__ == '__main__':
     main()
