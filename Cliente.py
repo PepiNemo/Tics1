@@ -2,7 +2,7 @@ import random
 
 class Cliente:
     def __init__(self, TiempoSeleccionPProd):
-        self.NumProductos=self.CantidadProductos()
+        self.NumProductos=self.CantidadProductos(1,30)
         self.Temporizador=self.TiempoSeleccionProductos(TiempoSeleccionPProd)
 
     def CantidadProductos(self, c1, c2):
