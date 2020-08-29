@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import *
 
-
+#cambiar .pack() por .place(x=,y=)
 class Simulador():
     def __init__(self, master):
         self.master = master
@@ -81,7 +81,13 @@ class Simulador():
         '''-----------METODOS-----------'''
 
     def simulate(self):
-        Desc = self.desc.get()
+        try:
+            Desc = self.desc.get()
+            BoolDesc = True
+        finally:
+            if len(Desc) <= 0 or len(Desc) > 60:
+                BoolDesc = False
+
         try:
             Horas = int(self.horas.get())
             BoolHoras = True
@@ -168,7 +174,7 @@ class Simulador():
             #simulador(Datos)
         #else:
             #Abrir segunda pantalla indicando los datos mal ingresados
-            #Intentar setear por default los datos ingresados la anteriormente
+            #Intentar setear por default los datos ingresados la anteriormente con Set
         self.master.destroy()
         print("simulando")
 
