@@ -1,11 +1,13 @@
+import random
+
 class Cliente:
     def __init__(self, TiempoSeleccionPProd):
         self.NumProductos=self.CantidadProductos()
         self.Temporizador=self.TiempoSeleccionProductos(TiempoSeleccionPProd)
 
-    def CantidadProductos(self):
-        return 20
-        #El aleatorio entra c1 y c2
+    def CantidadProductos(self, c1, c2):
+        ran = random.randint(c1,c2)
+        return ran
 
     def TiempoSeleccionProductos(self,TiempoSeleccionPProd):
         return TiempoSeleccionPProd*self.NumProductos
