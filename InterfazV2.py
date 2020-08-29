@@ -33,7 +33,7 @@ class Simulador():
         self.clientes.pack()
 
         '''----------Distribucion----------'''
-        self.lblDistribucion = Label(text="Distribucion cajas por periodo")
+        self.lblDistribucion = Label(text="Distribucion clietnes por periodo")
         self.lblDistribucion.pack()
         self.distribucion = Entry(width=60)
         self.distribucion.pack()
@@ -82,94 +82,95 @@ class Simulador():
 
     def simulate(self):
         Desc = self.desc.get()
-        Horas = int(self.horas.get())
-        Periodos = int(self.periodos.get())
-        Clientes = int(self.clientes.get())
-        Minprod = int(self.minprod.get())
-        Maxprod = int(self.maxprod.get())
-        Tsel = int(self.TS.get())
-        Tmar = int(self.TM.get())
-        Tpago = int(self.TP.get())
+        try:
+            Horas = int(self.horas.get())
+            BoolHoras = True
+        except:
+            print("Valor ingresado en horas de atencion no entero")
+            BoolHoras = False
 
-        dis = self.distribucion.get()
-        disArr = dis.split(",")
-        Distrib = []
-        for i in disArr:
-            Distrib.append(int(i))
+        try:
+            Periodos = int(self.periodos.get())
+            BoolPeriodos = True
+        except:
+            print("Valor ingresado en periodos no entero")
+            BoolPeriodos = False
+        try:
+            Clientes = int(self.clientes.get())
+            BoolClientes = True
+        except:
+            print("Valor ingresado en cantidad de clientes no entero")
+            BoolClientes = False
+        try:
+            Minprod = int(self.minprod.get())
+            BoolMinProd = True
+        except:
+            print("Valor ingresado en minimo productos no entero")
+            BoolMinProd = False
+        try:
+            Maxprod = int(self.maxprod.get())
+            BoolMaxProd = True
+        except:
+            print("Valor ingresado en maximo Productos no entero")
+            BoolMaxProd = False
+        try:
+            Tsel = int(self.TS.get())
+            BoolTsel = True
+        except:
+            print("Valor ingresado en tiempo de seleccion no entero")
+            BoolTsel = False
+        try:
+            Tmar = int(self.TM.get())
+            BoolTmar = True
+        except:
+            print("Valor ingresado en tiempo de marcado no entero")
+            BoolTmar = False
+        try:
+            Tpago = int(self.TP.get())
+            BoolTpago = True
+        except:
+            print("Valor ingresado en tiempo de pago no entero")
+            BoolTpago = False
 
-        caj = self.cajas.get()
-        cajArr = caj.split(",")
-        CAJAS = []
-        for i in cajArr:
-            CAJAS.append(int(i))
+        try:
+            dis = self.distribucion.get()
+            disArr = dis.split(",")
+            Distrib = []
+            suma = 0
+            for i in disArr:
+                j = int(i)
+                Distrib.append(j)
+                suma += j
+            if suma == 100:
+                BoolDist = True
+            else:
+                BoolDist = True
+        except:
+            print("Error ingresando datos en distribuicon porcentual")
+            BoolDist = False
+        #finally todos valores mayores que 0 y suma  = 100
+        try: #excepcion todos los valores mayores que 0
+            caj = self.cajas.get()
+            cajArr = caj.split(",")
+            CAJAS = []
+            for i in cajArr:
+                j = int(i)
+                CAJAS.append(j)
+            BoolCajas = True
 
+        except:
+            print("Error ingresando datos en cantidad de cajas")
+            BoolCajas = False
+        #finally todos os valores mayores que 0
+
+
+        #if todas las condiciones True:
+            #simulador(Datos)
+        #else:
+            #Abrir segunda pantalla indicando los datos mal ingresados
+            #Intentar setear por default los datos ingresados la anteriormente
         self.master.destroy()
         print("simulando")
-
-        '''-----Chequeo Errores'''
-
-    def descCheck(self, Desc):
-        if Desc.len > 60:
-            return False
-        return True
-
-    def horasCheck(self, Horas):
-        if isinstance(Horas, int) and Horas > 0:
-            return True
-        return False
-
-    def PeriodosCheck(self, Periodos):
-        if isinstance(Periodos, int) and Periodos > 9:
-            return True
-        return False
-
-    def ClientesCheck(self, Clientes):
-        if isinstance(Clientes, int) and Clientes > 0:
-            return True
-        return False
-
-    def DistribucionCheck(self, Distrib, Periodos):
-        for i in Distrib:
-            if isinstance(i, int) is False:
-                return False
-        if Distrib.len != Periodos:
-            return False
-        return True
-
-    def CajasCheck(self, CAJAS, Periodos):
-        for i in CAJAS:
-            if isinstance(i,int) is False:
-                return False
-        if CAJAS.len != Periodos:
-            return False
-        return True
-    def ProductosMinCheck(self,MinProd):
-        if(isinstance(MinProd,int) is False):
-            return False
-        if MinProd<0:
-            return False
-        return True
-    def ProductosMacCheck(self,MaxProd,MinProd):
-        if isinstance(MaxProd,int) is False:
-            return  False
-        if MaxProd<MinProd:
-            return False
-        return True
-    def TiempoSelecCheck(self,Tsel):
-        if isinstance(Tsel,int) and Tsel>0:
-            return True
-        return False
-
-    def TiempoMarCheck(self, Tmar):
-        if isinstance(Tmar, int) and Tmar > 0:
-            return True
-        return False
-
-    def TiempopagoCheck(self, Tpago):
-         if isinstance(Tpago, int) and Tpago > 0:
-            return True
-         return False
-
 
 
 
