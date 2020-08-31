@@ -22,7 +22,7 @@ TPPagoCliente = 45
 
 
 ####################################  Simulacion  ############################
-
+#
 # Genarar Las Cajas de Un intervalo
 Cajas = []
 # Almacen de clientes Seleccionando Productos
@@ -31,7 +31,7 @@ ClientesSeleccionando = []
 TiempoSimulado=0
 
 for i in range(10):#i =Intervalos
-    print("Numero de intervalo :"+str(i))
+    print("Numero de intervalo :"+str(i+1))
     for j in range(CajasAbiertas[i]):
         #Abre las nuevas Cajas del Intervalo Correspondiente
         NuevaCaja = Caja.Caja(TPMarcadoCajaProducto, TPPagoCliente, i)
@@ -57,7 +57,7 @@ for i in range(10):#i =Intervalos
     for z in range(3600):
         # Corremos 1 segundo en los temporizadores
         TiempoSimulado=TiempoSimulado+1
-        # Vista Clientes
+        # Vista Clientesc
 
         # Cuando el temporizador TPEntraCliente llega a 0 entra un nuevo Cliente
         TPEntraCliente = TPEntraCliente-1
