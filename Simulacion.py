@@ -5,7 +5,7 @@ from FuncionesSimulacion import InsertarClienteCaja
 from FuncionesSimulacion import TemporizadorClientes
 from FuncionesSimulacion import CajaMenorCola
 from FuncionesSimulacion import ObtenerDatosCajas
-from FuncionesSimulacion import GenerarPDF
+from FuncionesSimulacion import GenerarTabla
 
 
 # ----------------------------------- Input ------------------------------------------------
@@ -30,7 +30,7 @@ ClientesDespachados = []
 ProductosDespachados = []
 ColasPromedio = []
 MaximaCola = []
-for t in range (10):
+for t in range(11):
     TiempoSimulado.append(0)
     ClientesIngresados.append(0)
     ClientesDespachados.append(0)
@@ -38,7 +38,7 @@ for t in range (10):
     MaximaCola.append(0)
 
 
-####################################  Simulacion  ############################
+#------------------------------------ Simulacion  ---------------------------------------------------------------------#
 
 # Genarar Las Cajas de Un intervalo
 Cajas = []
@@ -49,21 +49,20 @@ ClientesSeleccionando = []
 
 for i in range(10):  # i =Intervalos
 
-    print("Numero de intervalo :"+str(i+1))
+    print("Numero de intervalo : "+str(i+1))
     for j in range(CajasAbiertas[i]):
         # Abre las nuevas Cajas del Intervalo Correspondiente
         NuevaCaja = Caja.Caja(TPMarcadoCajaProducto, TPPagoCliente, i)
         Cajas.append(NuevaCaja)
-    #Contador temporal del intervalo para el tamano de las colas de las cajas
-    ContClientesCola=[0,0]
+    # Contador temporal del intervalo para el tamano de las colas de las cajas
+    ContClientesCola = [0, 0]
 
     # Temporizador que indica cada cuanto entra un nuevo Cliente
     TPEntraCliente = 3600 // (NumeroTotalClientes*DistribucionPorcentual[i])
 
-
-    #Para que el contador de tiempo del intervalo comienze a contar considerando el tiempo transcurrido
-    if(i>0):
-        TiempoSimulado[i]=TiempoSimulado[i-1]
+    # Para que el contador de tiempo del intervalo comienze a contar considerando el tiempo transcurrido
+    if(i > 0):
+        TiempoSimulado[i] = TiempoSimulado[i-1]
 
     # Empieza el tiempo de un solo Intervalo
     for z in range(3600):
@@ -86,43 +85,41 @@ for i in range(10):  # i =Intervalos
 
         # Vista Caja
         # Quitar 1 segundo a los clientes Seleccionando, para dps despachar
-        TemporizadorCajas(Cajas, i, ClientesDespachados, ProductosDespachados)
+        TemporizadorCajas(Cajas, i, ClientesDespachados, ProductosDespachados, ContClientesCola, MaximaCola)
 
-    ObtenerDatosCajas(Cajas, i, ClientesDespachados, ProductosDespachados)
-    #Almacenamos los contadores de la cola, para calcular el promedio de cola y lo almecenamos para dps generar el pdf  
-    ColasPromedio.append(ContClientesCola[0]//ContClientesCola[1]) 
+    # Almacenamos los contadores de la cola, para calcular el promedio de cola y lo almecenamos para dps generar el pdf
+    ColasPromedio.append(ContClientesCola[0]//ContClientesCola[1])
+    ObtenerDatosCajas(Cajas, i, ClientesDespachados, ProductosDespachados)   
 
+
+# Tiempo Extra
+i=10
+TiempoExtra=False
+if(len(Cajas) > 0 or len(ClientesSeleccionando) > 0):
+    # Para que el contador de tiempo del intervalo comienze a contar considerando el tiempo transcurrido
+    TiempoSimulado[i] = TiempoSimulado[i-1]
+    # Contador temporal del intervalo para el tamano de las colas de las cajas
+    ContClientesCola = [0, 0]
+    TiempoExtra=True
+
+while(len(Cajas) > 0 or len(ClientesSeleccionando) > 0):
+
+    TiempoSimulado[i] = TiempoSimulado[i]+1
+    # Quitar 1 segundos a los clientes seleccionando, para dps ir a Caja (Temporizador e InsertarCliente)
+    TemporizadorClientes(ClientesSeleccionando, Cajas,
+                         i,ContClientesCola, MaximaCola)
+
+    # Vista Caja
+    # Quitar 1 segundo a los clientes Seleccionando, para dps despachar
+    TemporizadorCajas(Cajas, i, ClientesDespachados, ProductosDespachados, ContClientesCola, MaximaCola)
+
+#Si Hubo tiempo Extra almacenar los contadores para los requerimientos del programa, tamano Colas, Clientes despachados y Productos Despachados
+if(TiempoExtra== True):
+    print("Numero de intervalo :","TiempoExtra")
+    # Almacenamos los contadores de la cola, para calcular el promedio de cola y lo almecenamos para dps generar el pdf
+    ColasPromedio.append(ContClientesCola[0]//ContClientesCola[1])
+    ObtenerDatosCajas(Cajas, i, ClientesDespachados, ProductosDespachados)   
 
 
 # Construccion de la tabla que mostrara los datos solicitados
-
-data = [
-    ['Intervalo', 'Tiempo Simulado[s]', 'clientes ingresados', 'clientes despachados',
-        'promedio de productos', 'colas promedio', 'maxima cola'],
-
-    ['1', str(TiempoSimulado[0]), str(ClientesIngresados[0]), str(ClientesDespachados[0]), str(
-        ProductosDespachados[0]//ClientesDespachados[0]), str(ColasPromedio[0]), str(MaximaCola[0])],
-    ['2', str(TiempoSimulado[1]), str(ClientesIngresados[1]), str(ClientesDespachados[1]), str(
-        ProductosDespachados[1]//ClientesDespachados[1]), str(ColasPromedio[1]), str(MaximaCola[1])],
-    ['3', str(TiempoSimulado[2]), str(ClientesIngresados[2]), str(ClientesDespachados[2]), str(
-        ProductosDespachados[2]//ClientesDespachados[2]), str(ColasPromedio[2]), str(MaximaCola[2])],
-    ['4', str(TiempoSimulado[3]), str(ClientesIngresados[3]), str(ClientesDespachados[3]), str(
-        ProductosDespachados[3]//ClientesDespachados[3]), str(ColasPromedio[3]), str(MaximaCola[3])],
-    ['5', str(TiempoSimulado[4]), str(ClientesIngresados[4]), str(ClientesDespachados[4]), str(
-        ProductosDespachados[4]//ClientesDespachados[4]), str(ColasPromedio[4]), str(MaximaCola[4])],
-    ['6', str(TiempoSimulado[5]), str(ClientesIngresados[5]), str(ClientesDespachados[5]), str(
-        ProductosDespachados[5]//ClientesDespachados[5]), str(ColasPromedio[5]), str(MaximaCola[5])],
-    ['7', str(TiempoSimulado[6]), str(ClientesIngresados[6]), str(ClientesDespachados[6]), str(
-        ProductosDespachados[6]//ClientesDespachados[6]), str(ColasPromedio[6]), str(MaximaCola[6])],
-    ['8', str(TiempoSimulado[7]), str(ClientesIngresados[7]), str(ClientesDespachados[7]), str(
-        ProductosDespachados[7]//ClientesDespachados[7]), str(ColasPromedio[7]), str(MaximaCola[7])],
-    ['9', str(TiempoSimulado[8]), str(ClientesIngresados[8]), str(ClientesDespachados[8]), str(
-        ProductosDespachados[8]//ClientesDespachados[8]), str(ColasPromedio[8]), str(MaximaCola[8])],
-    ['10', str(TiempoSimulado[9]), str(ClientesIngresados[9]), str(ClientesDespachados[9]), str(
-        ProductosDespachados[9]//ClientesDespachados[9]), str(ColasPromedio[9]), str(MaximaCola[9])],
-
-]
-
-# llamado a la funcion que se encarga de generar una tabla con los datos en un PDF
-
-GenerarPDF(data)
+GenerarTabla(TiempoSimulado, ClientesIngresados,ClientesDespachados,ProductosDespachados,ColasPromedio,MaximaCola)

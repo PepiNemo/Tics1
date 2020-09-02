@@ -1,7 +1,14 @@
 
-def TemporizadorClientes(ClientesSeleccionando, Cajas, InterValo,ContClientesCola,MaxCola):
+def TemporizadorClientes(ClientesSeleccionando, Cajas, InterValo, ContClientesCola, MaximaCola):
     # Recorrer ClientesSeleccionando y quitarle 1 segundos a su temporizador
     # Si el temporizador llega a 0 Insertar en la caja Mas Vacia
+
+    #Condicion para cuando ya terminaron los intervalos y aun quedan clientes 
+    b=False
+    if InterValo==10:
+        InterValo=9
+        b=True
+
     contador=[]
     for i in range(len(ClientesSeleccionando)):
         if(ClientesSeleccionando[i].Temporizador > 0):
@@ -13,12 +20,22 @@ def TemporizadorClientes(ClientesSeleccionando, Cajas, InterValo,ContClientesCol
             contador.append(i)
             #Mandamos al Cliente a la Caja con Menor Cola
             IndiceCajaMasVacia = CajaMenorCola(Cajas, InterValo)
-            InsertarClienteCaja(i, Cajas, ClientesSeleccionando, IndiceCajaMasVacia)
+            InsertarClienteCaja(i, Cajas, ClientesSeleccionando, IndiceCajaMasVacia, ContClientesCola, MaximaCola)
+            
             #Obtener datos de las Colas, para los requerimientos
             ContClientesCola[0]=ContClientesCola[0]+len(Cajas[IndiceCajaMasVacia].Cola)
             ContClientesCola[1]=ContClientesCola[1]+1
-            if(MaxCola[InterValo]<len(Cajas[IndiceCajaMasVacia].Cola)):
-                MaxCola[InterValo]=len(Cajas[IndiceCajaMasVacia].Cola)
+            if b==False:
+                if(MaximaCola[InterValo]<len(Cajas[IndiceCajaMasVacia].Cola)):
+                    MaximaCola[InterValo]=len(Cajas[IndiceCajaMasVacia].Cola)
+            else:
+                if(MaximaCola[InterValo+1]<len(Cajas[IndiceCajaMasVacia].Cola)):
+                    MaximaCola[InterValo+1]=len(Cajas[IndiceCajaMasVacia].Cola)
+
+
+            
+            
+
 
     #Este for es para eliminar los clientes ingresados sin tener problemas con los index fuera de rango
     for j in range(len(contador)):
@@ -41,20 +58,28 @@ def CajaMenorCola(Cajas, Intervalo):
                     Indice = a
     return Indice
     
-def InsertarClienteCaja(IndiceCliente ,Cajas, ClientesSeleccionando, IndiceCajaMasVacia):
+def InsertarClienteCaja(IndiceCliente ,Cajas, ClientesSeleccionando, IndiceCajaMasVacia,ContClientesCola,MaxCola):
     Cajas[IndiceCajaMasVacia].AgregarCliente(ClientesSeleccionando[IndiceCliente])
     # Si la caja no estaba atendiendo
     if(Cajas[IndiceCajaMasVacia].Temporizador == -1):
         # Que comience a atender inicializando el Temporizador
         Cajas[IndiceCajaMasVacia].AtenderSiguienteCliente()
 
-def TemporizadorCajas(Cajas,Intervalo,ContClientesDesp, ContProductosDesp):
+
+def TemporizadorCajas(Cajas,Intervalo,ContClientesDesp, ContProductosDesp,ContClientesCola,MaxCola):
     Indices=[]
+
     for i in range(len(Cajas)):
         if(Cajas[i].Temporizador > 0):
             Cajas[i].Temporizador = Cajas[i].Temporizador-1
 
         elif(Cajas[i].Temporizador == 0):
+            #Obtener datos de las Colas, para los requerimientos
+            ContClientesCola[0]=ContClientesCola[0]+len(Cajas[i].Cola)
+            ContClientesCola[1]=ContClientesCola[1]+1
+            if(MaxCola[Intervalo]<len(Cajas[i].Cola)):
+                MaxCola[Intervalo]=len(Cajas[i].Cola)
+            
             #Si el temporizador llego a 0, el cliente ya fue atendido y queda despachar
             Cajas[i].DespacharCliente()
             # Si no tiene mas Clientes en cola Deja de Atender
@@ -93,6 +118,43 @@ def ObtenerDatosCajas(Cajas,Intervalo, ContClientesDesp, ContProductosDesp):
     #Este for es para eliminar los clientes ingresados sin tener problemas con los index fuera de rango
     for j in range(len(Indices)):
         del Cajas[Indices[j]-j]
+
+def GenerarTabla(TiempoSimulado, ClientesIngresados,ClientesDespachados,ProductosDespachados,ColasPromedio,MaximaCola):
+    # Construccion de la tabla que mostrara los datos solicitados
+
+
+    data = [
+        ['Intervalo', 'Tiempo Simulado[s]', 'clientes ingresados', 'clientes despachados',
+            'promedio de productos', 'colas promedio', 'maxima cola'],
+
+        ['1', str(TiempoSimulado[0]), str(ClientesIngresados[0]), str(ClientesDespachados[0]), str(
+            ProductosDespachados[0]//ClientesDespachados[0]), str(ColasPromedio[0]), str(MaximaCola[0])],
+        ['2', str(TiempoSimulado[1]), str(ClientesIngresados[1]), str(ClientesDespachados[1]), str(
+            ProductosDespachados[1]//ClientesDespachados[1]), str(ColasPromedio[1]), str(MaximaCola[1])],
+        ['3', str(TiempoSimulado[2]), str(ClientesIngresados[2]), str(ClientesDespachados[2]), str(
+            ProductosDespachados[2]//ClientesDespachados[2]), str(ColasPromedio[2]), str(MaximaCola[2])],
+        ['4', str(TiempoSimulado[3]), str(ClientesIngresados[3]), str(ClientesDespachados[3]), str(
+            ProductosDespachados[3]//ClientesDespachados[3]), str(ColasPromedio[3]), str(MaximaCola[3])],
+        ['5', str(TiempoSimulado[4]), str(ClientesIngresados[4]), str(ClientesDespachados[4]), str(
+            ProductosDespachados[4]//ClientesDespachados[4]), str(ColasPromedio[4]), str(MaximaCola[4])],
+        ['6', str(TiempoSimulado[5]), str(ClientesIngresados[5]), str(ClientesDespachados[5]), str(
+            ProductosDespachados[5]//ClientesDespachados[5]), str(ColasPromedio[5]), str(MaximaCola[5])],
+        ['7', str(TiempoSimulado[6]), str(ClientesIngresados[6]), str(ClientesDespachados[6]), str(
+            ProductosDespachados[6]//ClientesDespachados[6]), str(ColasPromedio[6]), str(MaximaCola[6])],
+        ['8', str(TiempoSimulado[7]), str(ClientesIngresados[7]), str(ClientesDespachados[7]), str(
+            ProductosDespachados[7]//ClientesDespachados[7]), str(ColasPromedio[7]), str(MaximaCola[7])],
+        ['9', str(TiempoSimulado[8]), str(ClientesIngresados[8]), str(ClientesDespachados[8]), str(
+            ProductosDespachados[8]//ClientesDespachados[8]), str(ColasPromedio[8]), str(MaximaCola[8])],
+        ['10', str(TiempoSimulado[9]), str(ClientesIngresados[9]), str(ClientesDespachados[9]), str(
+            ProductosDespachados[9]//ClientesDespachados[9]), str(ColasPromedio[9]), str(MaximaCola[9])],
+        ['Extra', str(TiempoSimulado[10]), str(ClientesIngresados[10]), str(ClientesDespachados[10]), str(
+            ProductosDespachados[10]//ClientesDespachados[10]), str(ColasPromedio[10]), str(MaximaCola[10])],
+
+    ]
+
+    # llamado a la funcion que se encarga de generar una tabla con los datos en un PDF
+
+    GenerarPDF(data)
 
 def GenerarPDF(data):
     fileName = 'pdfTable.pdf'
