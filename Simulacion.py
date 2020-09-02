@@ -63,7 +63,8 @@ for i in range(10):  # i =Intervalos
 
     # Temporizador que indica cada cuanto entra un nuevo Cliente
     #print(float((DistribucionPorcentual[i]/100)))
-    TPEntraCliente = 3600 // (NumeroTotalClientes*(DistribucionPorcentual[i]/100))
+    TPEntraCliente = int(3600 // (NumeroTotalClientes*DistribucionPorcentual[i]/100))
+    print(TPEntraCliente)
 
     # Para que el contador de tiempo del intervalo comienze a contar considerando el tiempo transcurrido
     if(i > 0):
@@ -77,12 +78,12 @@ for i in range(10):  # i =Intervalos
 
         # Cuando el temporizador TPEntraCliente llega a 0 entra un nuevo Cliente
         TPEntraCliente = TPEntraCliente-1
-        if(TPEntraCliente == 0 or z == 0):  # Entra un NuevoCliente
+        if(TPEntraCliente == 0):  # Entra un NuevoCliente
             ClientesIngresados[i] = ClientesIngresados[i]+1
             NuevoCliente = Cliente.Cliente(TPSeleccionProducto,MinimoDeProductos,MaximoDeProductos)
             ClientesSeleccionando.append(NuevoCliente)
-            TPEntraCliente = 3600 // (NumeroTotalClientes *
-                                      DistribucionPorcentual[i]/100)
+            TPEntraCliente = int(3600 // (NumeroTotalClientes * DistribucionPorcentual[i]/100))
+            print(TPEntraCliente)
 
         # Quitar 1 segundos a los clientes seleccionando, para dps ir a Caja (Temporizador e InsertarCliente)
         TemporizadorClientes(ClientesSeleccionando, Cajas,
@@ -93,8 +94,12 @@ for i in range(10):  # i =Intervalos
         TemporizadorCajas(Cajas, i, ClientesDespachados, ProductosDespachados, ContClientesCola, MaximaCola)
 
     # Almacenamos los contadores de la cola, para calcular el promedio de cola y lo almecenamos para dps generar el pdf
-    ColasPromedio.append(ContClientesCola[0]//ContClientesCola[1])
-    ObtenerDatosCajas(Cajas, i, ClientesDespachados, ProductosDespachados)   
+    ObtenerDatosCajas(Cajas, i, ClientesDespachados, ProductosDespachados)
+    #Si no en un intervalo ningun cliente alcanza a estar en cola, con los if evitamos la division con 0
+    if ContClientesCola[1]==0:
+        ColasPromedio.append(0)
+    else:
+        ColasPromedio.append(ContClientesCola[0]//ContClientesCola[1])  
 
 
 # Tiempo Extra

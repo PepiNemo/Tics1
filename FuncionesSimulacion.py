@@ -121,6 +121,13 @@ def ObtenerDatosCajas(Cajas,Intervalo, ContClientesDesp, ContProductosDesp):
 
 def GenerarTabla(TiempoSimulado, ClientesIngresados,ClientesDespachados,ProductosDespachados,ColasPromedio,MaximaCola):
     # Construccion de la tabla que mostrara los datos solicitados
+    
+    PromedioProductos=[]
+    for i in range(11):
+        if(ClientesDespachados[i]==0):
+            PromedioProductos.append(0)
+        else:
+            PromedioProductos.append(ProductosDespachados[i]//ClientesDespachados[i])
 
 
     data = [
@@ -128,27 +135,27 @@ def GenerarTabla(TiempoSimulado, ClientesIngresados,ClientesDespachados,Producto
             'promedio de productos', 'colas promedio', 'maxima cola'],
 
         ['1', str(TiempoSimulado[0]), str(ClientesIngresados[0]), str(ClientesDespachados[0]), str(
-            ProductosDespachados[0]//ClientesDespachados[0]), str(ColasPromedio[0]), str(MaximaCola[0])],
+            PromedioProductos[0]), str(ColasPromedio[0]), str(MaximaCola[0])],
         ['2', str(TiempoSimulado[1]), str(ClientesIngresados[1]), str(ClientesDespachados[1]), str(
-            ProductosDespachados[1]//ClientesDespachados[1]), str(ColasPromedio[1]), str(MaximaCola[1])],
+            PromedioProductos[1]), str(ColasPromedio[1]), str(MaximaCola[1])],
         ['3', str(TiempoSimulado[2]), str(ClientesIngresados[2]), str(ClientesDespachados[2]), str(
-            ProductosDespachados[2]//ClientesDespachados[2]), str(ColasPromedio[2]), str(MaximaCola[2])],
+            PromedioProductos[2]), str(ColasPromedio[2]), str(MaximaCola[2])],
         ['4', str(TiempoSimulado[3]), str(ClientesIngresados[3]), str(ClientesDespachados[3]), str(
-            ProductosDespachados[3]//ClientesDespachados[3]), str(ColasPromedio[3]), str(MaximaCola[3])],
+            PromedioProductos[3]), str(ColasPromedio[3]), str(MaximaCola[3])],
         ['5', str(TiempoSimulado[4]), str(ClientesIngresados[4]), str(ClientesDespachados[4]), str(
-            ProductosDespachados[4]//ClientesDespachados[4]), str(ColasPromedio[4]), str(MaximaCola[4])],
+            PromedioProductos[4]), str(ColasPromedio[4]), str(MaximaCola[4])],
         ['6', str(TiempoSimulado[5]), str(ClientesIngresados[5]), str(ClientesDespachados[5]), str(
-            ProductosDespachados[5]//ClientesDespachados[5]), str(ColasPromedio[5]), str(MaximaCola[5])],
+            PromedioProductos[5]), str(ColasPromedio[5]), str(MaximaCola[5])],
         ['7', str(TiempoSimulado[6]), str(ClientesIngresados[6]), str(ClientesDespachados[6]), str(
-            ProductosDespachados[6]//ClientesDespachados[6]), str(ColasPromedio[6]), str(MaximaCola[6])],
+            PromedioProductos[6]), str(ColasPromedio[6]), str(MaximaCola[6])],
         ['8', str(TiempoSimulado[7]), str(ClientesIngresados[7]), str(ClientesDespachados[7]), str(
-            ProductosDespachados[7]//ClientesDespachados[7]), str(ColasPromedio[7]), str(MaximaCola[7])],
+            PromedioProductos[7]), str(ColasPromedio[7]), str(MaximaCola[7])],
         ['9', str(TiempoSimulado[8]), str(ClientesIngresados[8]), str(ClientesDespachados[8]), str(
-            ProductosDespachados[8]//ClientesDespachados[8]), str(ColasPromedio[8]), str(MaximaCola[8])],
+            PromedioProductos[8]), str(ColasPromedio[8]), str(MaximaCola[8])],
         ['10', str(TiempoSimulado[9]), str(ClientesIngresados[9]), str(ClientesDespachados[9]), str(
-            ProductosDespachados[9]//ClientesDespachados[9]), str(ColasPromedio[9]), str(MaximaCola[9])],
+            PromedioProductos[9]), str(ColasPromedio[9]), str(MaximaCola[9])],
         ['Extra', str(TiempoSimulado[10]), str(ClientesIngresados[10]), str(ClientesDespachados[10]), str(
-            ProductosDespachados[10]//ClientesDespachados[10]), str(ColasPromedio[10]), str(MaximaCola[10])],
+            PromedioProductos[10]), str(ColasPromedio[10]), str(MaximaCola[10])],
 
     ]
 
