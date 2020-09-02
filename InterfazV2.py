@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import *
-
+#lista, creo
 def retornar():
     nombre = "Ingrese Nombre"
     desc = "Ingrese una descripcion"
@@ -294,16 +294,16 @@ class Simulador:
             lblD.place(x=285, y=40)
             if not BoolHoras:
                 lblH['text']="Error en las horas ingresadas, debe ser mayor que 0."
-            lblH.place(x=285,y=50)
+            lblH.place(x=285,y=70)
             if not BoolClientes:
                 lblC['text']="Error en la cantidad de clientes, debe ser mayor que 0."
             lblC.place(x=285,y=100)
             if not BoolDist:
-                lblDist['text']== "Error en la distribicion de cajas, deben ser "+ str(Periodos)+" valores y sumar 100"
+                lblDist['text']== "Error en la distribicion de cajas, deben ser 10 valores y sumar 100"
                 self.master.geometry('650x375')
             lblDist.place(x=285,y=130)
             if not BoolCajas:
-                lblCajas['text']="Error en la cantidad de cajas, deben ser "+ str(Periodos) +" valores"
+                lblCajas['text']="Error en la cantidad de cajas, deben ser 10 valores"
             lblCajas.place(x=285,y=160)
             if not BoolMinProd:
                 lblMin['text']="Error en cantidad minima de productos, debe ser mayor o igual a 0."
@@ -317,7 +317,7 @@ class Simulador:
             if not BoolTmar:
                 lblTmar['text']="Error en tiempo promedio de marcado, debe ser mayor que 0."
             lblTmar.place(x=285,y=280)
-            if not BoolTsel:
+            if not BoolTpago:
                 lblTpago['text']="Error en tiempo promedio de pago, debe ser mayor que 0."
             lblTpago.place(x=285,y=310)
 
