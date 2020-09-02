@@ -1,8 +1,8 @@
 import random
 
 class Cliente:
-    def __init__(self, TiempoSeleccionPProd):
-        self.NumProductos=self.CantidadProductos(1,30)
+    def __init__(self, TiempoSeleccionPProd,MinimoDeProductos,MaximoDeProductos):
+        self.NumProductos=self.CantidadProductos(MinimoDeProductos,MaximoDeProductos)
         self.Temporizador=self.TiempoSeleccionProductos(TiempoSeleccionPProd)
 
     def CantidadProductos(self, c1, c2):

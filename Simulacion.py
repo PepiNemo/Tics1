@@ -1,5 +1,6 @@
 import Caja
 import Cliente
+from InterfazV2 import retornar
 from FuncionesSimulacion import TemporizadorCajas
 from FuncionesSimulacion import InsertarClienteCaja
 from FuncionesSimulacion import TemporizadorClientes
@@ -8,20 +9,23 @@ from FuncionesSimulacion import ObtenerDatosCajas
 from FuncionesSimulacion import GenerarTabla
 
 
+
 # ----------------------------------- Input ------------------------------------------------
 # Datos Ingresados por el Cliente
-NumeroTotalClientes = 1200
+entrada=retornar()
+print(entrada)
+HorasDeAtencion=entrada[2]
+NumeroTotalClientes = entrada[3]
 
 # Arreglos de 10 elementos para cada Intervalo
-CajasAbiertas = [5, 5, 5, 10, 10, 10, 15, 15, 10, 10]
-DistribucionPorcentual = [0.05, 0.07, 0.09,
-                          0.11, 0.14, 0.14, 0.09, 0.07, 0.11, 0.13]
+CajasAbiertas = entrada[4]
+DistribucionPorcentual = entrada[5]
+MinimoDeProductos=entrada[6]
+MaximoDeProductos=entrada[7]
 # Datos que iran en los atributos de las Clases
-# TP=TiempoPromedio
-TPSeleccionProducto = 30
-TPMarcadoCajaProducto = 10
-TPPagoCliente = 45
-
+TPSeleccionProducto = entrada[8]
+TPMarcadoCajaProducto = entrada[9]
+TPPagoCliente = entrada[10]
 
 # Listas para almacenar los datos pedidos
 TiempoSimulado = []
@@ -58,7 +62,8 @@ for i in range(10):  # i =Intervalos
     ContClientesCola = [0, 0]
 
     # Temporizador que indica cada cuanto entra un nuevo Cliente
-    TPEntraCliente = 3600 // (NumeroTotalClientes*DistribucionPorcentual[i])
+    #print(float((DistribucionPorcentual[i]/100)))
+    TPEntraCliente = 3600 // (NumeroTotalClientes*DistribucionPorcentual[i]/100)
 
     # Para que el contador de tiempo del intervalo comienze a contar considerando el tiempo transcurrido
     if(i > 0):
@@ -74,7 +79,7 @@ for i in range(10):  # i =Intervalos
         TPEntraCliente = TPEntraCliente-1
         if(TPEntraCliente == 0 or z == 0):  # Entra un NuevoCliente
             ClientesIngresados[i] = ClientesIngresados[i]+1
-            NuevoCliente = Cliente.Cliente(TPSeleccionProducto)
+            NuevoCliente = Cliente.Cliente(TPSeleccionProducto,MinimoDeProductos,MaximoDeProductos)
             ClientesSeleccionando.append(NuevoCliente)
             TPEntraCliente = 3600 // (NumeroTotalClientes *
                                       DistribucionPorcentual[i])
