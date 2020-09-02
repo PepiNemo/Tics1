@@ -220,9 +220,9 @@ class Simulador:
             for i in self.Distrib:
                 suma += i
                 if i <=0:
-                    BoolDist = False
-                    
-            if suma == 100:
+                    BoolZero = False
+
+            if suma == 100 and BoolZero:
                 BoolDist = True
             else:
                 BoolDist = False
