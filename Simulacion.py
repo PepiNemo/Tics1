@@ -34,12 +34,15 @@ ClientesDespachados = []
 ProductosDespachados = []
 ColasPromedio = []
 MaximaCola = []
+TPEntraCliente=[]
 for t in range(11):
     TiempoSimulado.append(0)
     ClientesIngresados.append(0)
     ClientesDespachados.append(0)
+    ColasPromedio.append(0)
     ProductosDespachados.append(0)
     MaximaCola.append(0)
+    TPEntraCliente.append(0)
 
 
 #------------------------------------ Simulacion  ---------------------------------------------------------------------#
@@ -49,7 +52,10 @@ Cajas = []
 # Almacen de clientes Seleccionando Productos
 ClientesSeleccionando = []
 # Tiempo de cuanto segundo se simulan en la ejecucion del programa
+#TPEntraCliente = int(3600 // (NumeroTotalClientes*DistribucionPorcentual[i]/100))
 
+#Caso unico para poder completar los clientes ingresados diarios
+Unico=False
 
 for i in range(10):  # i =Intervalos
 
@@ -63,12 +69,21 @@ for i in range(10):  # i =Intervalos
 
     # Temporizador que indica cada cuanto entra un nuevo Cliente
     #print(float((DistribucionPorcentual[i]/100)))
-    TPEntraCliente = int(3600 // (NumeroTotalClientes*DistribucionPorcentual[i]/100))
-    print(TPEntraCliente)
+    TPEntraCliente[i] = int(3600 // (NumeroTotalClientes*DistribucionPorcentual[i]/100))
 
     # Para que el contador de tiempo del intervalo comienze a contar considerando el tiempo transcurrido
     if(i > 0):
         TiempoSimulado[i] = TiempoSimulado[i-1]
+        TPEntraCliente[i]=int(3600 // (NumeroTotalClientes * DistribucionPorcentual[i]/100))-TPEntraCliente[i-1]
+        if(TPEntraCliente[i]<0):
+            ClientesIngresados[i] = ClientesIngresados[i]+1
+            NuevoCliente = Cliente.Cliente(TPSeleccionProducto,MinimoDeProductos,MaximoDeProductos)
+            ClientesSeleccionando.append(NuevoCliente)
+            TPEntraCliente[i] = int(3600 // (NumeroTotalClientes*DistribucionPorcentual[i]/100))
+
+
+        print(TPEntraCliente[i])
+
 
     # Empieza el tiempo de un solo Intervalo
     for z in range(3600):
@@ -77,13 +92,15 @@ for i in range(10):  # i =Intervalos
         # Vista Clientes
 
         # Cuando el temporizador TPEntraCliente llega a 0 entra un nuevo Cliente
-        TPEntraCliente = TPEntraCliente-1
-        if(TPEntraCliente == 0):  # Entra un NuevoCliente
+        
+        if(TPEntraCliente[i] == 0 or Unico==False) :  # Entra un NuevoCliente
+            Unico=True
             ClientesIngresados[i] = ClientesIngresados[i]+1
             NuevoCliente = Cliente.Cliente(TPSeleccionProducto,MinimoDeProductos,MaximoDeProductos)
             ClientesSeleccionando.append(NuevoCliente)
-            TPEntraCliente = int(3600 // (NumeroTotalClientes * DistribucionPorcentual[i]/100))
-            print(TPEntraCliente)
+            TPEntraCliente[i] = int(3600 // (NumeroTotalClientes * DistribucionPorcentual[i]/100))
+        #Restamos 1 al temporizador de entrada de clientes
+        TPEntraCliente[i] = TPEntraCliente[i]-1
 
         # Quitar 1 segundos a los clientes seleccionando, para dps ir a Caja (Temporizador e InsertarCliente)
         TemporizadorClientes(ClientesSeleccionando, Cajas,
@@ -97,9 +114,9 @@ for i in range(10):  # i =Intervalos
     ObtenerDatosCajas(Cajas, i, ClientesDespachados, ProductosDespachados)
     #Si no en un intervalo ningun cliente alcanza a estar en cola, con los if evitamos la division con 0
     if ContClientesCola[1]==0:
-        ColasPromedio.append(0)
+        ColasPromedio[i]=0
     else:
-        ColasPromedio.append(ContClientesCola[0]//ContClientesCola[1])  
+        ColasPromedio[i]=ContClientesCola[0]//ContClientesCola[1]
 
 
 # Tiempo Extra
@@ -127,7 +144,7 @@ while(len(Cajas) > 0 or len(ClientesSeleccionando) > 0):
 if(TiempoExtra== True):
     print("Numero de intervalo :","TiempoExtra")
     # Almacenamos los contadores de la cola, para calcular el promedio de cola y lo almecenamos para dps generar el pdf
-    ColasPromedio.append(ContClientesCola[0]//ContClientesCola[1])
+    ColasPromedio[i]=ContClientesCola[0]//ContClientesCola[1]
     ObtenerDatosCajas(Cajas, i, ClientesDespachados, ProductosDespachados)   
 
 
