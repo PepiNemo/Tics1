@@ -2,9 +2,9 @@ import tkinter as tk
 from tkinter import *
 
 def retornar():
+    nombre = "Ingrese Nombre"
     desc = "Ingrese una descripcion"
     horas = "0"
-    periodos = "0"
     clientes = "0"
     distr = "0"
     cajas = "0"
@@ -17,19 +17,19 @@ def retornar():
     root = Tk()
     root.title = "Simulador"
     root.geometry('300x385')
-    app = Simulador(root,desc,horas,periodos,clientes,distr,cajas,min,max,ts,tm,tp)
+    app = Simulador(root,nombre,desc,horas,clientes,distr,cajas,min,max,ts,tm,tp)
     root.mainloop()
     print(app.Horas)
     lista = [Desc, Horas, Periodos, Clientes, Minprod, Maxprod, Tsel, Tmar, Tpago, Distrib, CAJAS]
     return lista
 
 class Simulador:
-    def __init__(self, master,Desc,Horas,Periodos,Clientes,Distribucion,Cajas,Minprod,Maxprod,ts,tm,tp):
+    def __init__(self, master,Nombre, Desc,Horas,Clientes,Distribucion,Cajas,Minprod,Maxprod,ts,tm,tp):
         self.master = master
         self.frame = tk.Frame(self.master)
+        self.Nombre = Nombre
         self.Desc = Desc
         self.Horas = Horas
-        self.Periodos = Periodos
         self.Clientes = Clientes
         self.Distrib = Distribucion
         self.Cajas = Cajas
@@ -38,27 +38,26 @@ class Simulador:
         self.ts = ts
         self.tm = tm
         self.tp = tp
+        '''----------Nombre----------'''
+        self.lblNombre = Label(text="Nombre")
+        self.lblNombre.place(x=20,y=10)
+        self.nombre = Entry()
+        self.nombre.insert(0,self.Nombre)
+        self.nombre.place(x=130,y = 10)
+        self.nombre.focus()
         '''----------Descripcion----------'''
         self.lblDesc = Label(text="Descripcion")
-        self.lblDesc.place(x=20, y=10)
+        self.lblDesc.place(x=20, y=40)
         self.desc = Entry()
         self.desc.insert(0,self.Desc)  # if error wea.insert(valor agregado antes)
-        self.desc.focus()
-        self.desc.place(x=130, y=10, width=130)
+        self.desc.place(x=130, y=40, width=130)
 
         '''----------Horas de atencion----------'''
         self.lblHoras = Label(text="Horas de Atencion") #rango de horas ej 08:00-18:00
-        self.lblHoras.place(x=20, y=40)
+        self.lblHoras.place(x=20, y=70)
         self.horas = Entry(width=60)
         self.horas.insert(0,self.Horas)
-        self.horas.place(x=130, y=40, width=130)
-
-        '''----------Periodos de Tiempo----------'''
-        self.lblPeriodos = Label(text="Periodos de tiempo")
-        self.lblPeriodos.place(x=20, y=70)
-        self.periodos = Entry(width=60)
-        self.periodos.insert(0,self.Periodos)
-        self.periodos.place(x=130, y=70, width=130)
+        self.horas.place(x=130, y=70, width=130)
 
         '''----------CLientes Esperados----------'''
         self.lblClientes = Label(text="Clientes Esperados")
@@ -122,10 +121,9 @@ class Simulador:
 
         '''-----------METODOS-----------'''
     def simulate(self):
-        global Desc, Horas, Periodos, Clientes, Minprod, Maxprod, Tsel, Tmar, Distrib, Tpago, CAJAS
+        global Desc, Horas, Clientes, Minprod, Maxprod, Tsel, Tmar, Distrib, Tpago, CAJAS
         BoolDesc = False
         BoolHoras = False
-        BoolPeriodos = False
         BoolClientes = False
         BoolMinProd = False
         BoolMaxProd = False
@@ -135,8 +133,18 @@ class Simulador:
         BoolDist = False
         BoolCajas = False
 
-        #finally if num <0 false
-        try:  # Se puede hacer sin exceptions
+        #finally if num <0 false y try nombre sin espacios
+        try:
+            Name = self.nombre.get()
+            name = Name[0]
+            BoolName = True
+        finally:
+            Name = self.nombre.get()
+            name = Name[0]
+            if len(name) <=0:
+                BoolName = False
+
+        try:
             Desc = self.desc.get()
             BoolDesc = True
         finally:
@@ -151,19 +159,19 @@ class Simulador:
         except:
             print("Valor ingresado en horas de atencion no entero")
             BoolHoras = False
+        finally:
+            if Horas <=0:
+                BoolHoras = False
 
-        try:
-            Periodos = int(self.periodos.get())
-            BoolPeriodos = True
-        except:
-            print("Valor ingresado en periodos no entero")
-            BoolPeriodos = False
         try:
             Clientes = int(self.clientes.get())
             BoolClientes = True
         except:
             print("Valor ingresado en cantidad de clientes no entero")
             BoolClientes = False
+        finally:
+            if Clientes<0:
+                BoolClientes = False
 
         try:
             Minprod = int(self.minprod.get())
@@ -171,6 +179,9 @@ class Simulador:
         except:
             print("Valor ingresado en minimo productos no entero")
             BoolMinProd = False
+        finally:
+            if Minprod < 0:
+                BoolMinProd = False
 
         try:
             Maxprod = int(self.maxprod.get())
@@ -178,6 +189,9 @@ class Simulador:
         except:
             print("Valor ingresado en maximo Productos no entero")
             BoolMaxProd = False
+        finally:
+            if Maxprod < Minprod:
+                BoolMaxProd = False
 
         try:
             Tsel = int(self.TS.get())
@@ -185,6 +199,9 @@ class Simulador:
         except:
             print("Valor ingresado en tiempo de seleccion no entero")
             BoolTsel = False
+        finally:
+            if Tsel <0:
+                BoolTsel = False
 
         try:
             Tmar = int(self.TM.get())
@@ -192,6 +209,9 @@ class Simulador:
         except:
             print("Valor ingresado en tiempo de marcado no entero")
             BoolTmar = False
+        finally:
+            if Tmar <0:
+                BoolTmar = False
 
         try:
             Tpago = int(self.TP.get())
@@ -199,6 +219,9 @@ class Simulador:
         except:
             print("Valor ingresado en tiempo de pago no entero")
             BoolTpago = False
+        finally:
+            if Tpago <0:
+                BoolTpago = False
 
         try:
             dis = self.distribucion.get()
@@ -207,7 +230,6 @@ class Simulador:
             for i in disArr:
                 j = int(i)
                 Distrib.append(j)
-
         except:
             print("Error ingresando datos en distribuicon porcentual")
             BoolDist = False
@@ -220,7 +242,8 @@ class Simulador:
             else:
                 BoolDist = False
                 print("Distribucion no suma 100")
-
+            if len(Distrib)!= 10:
+                BoolDist = False
         try:
             caj = self.cajas.get()
             cajArr = caj.split(",")
@@ -236,8 +259,10 @@ class Simulador:
             for i in CAJAS:
                 if i <= 0:
                     BoolCajas = False
+            if len(CAJAS) != 10:
+                BoolCajas = False
 
-        if BoolDesc and BoolHoras and BoolPeriodos and BoolClientes and BoolMinProd and BoolMaxProd and BoolTsel and BoolTmar and BoolTpago and BoolDist and BoolCajas:
+        if BoolName and BoolDesc and BoolHoras and BoolClientes and BoolMinProd and BoolMaxProd and BoolTsel and BoolTmar and BoolTpago and BoolDist and BoolCajas:
             #Simulacion(Desc, Horas, Periodos, Clientes, Minprod, Maxprod, Tsel, Tmar, Tpago, Distrib, CAJAS)
             print("Simulando")
             self.master.geometry('280x430')
@@ -246,12 +271,12 @@ class Simulador:
             NoBtn = tk.Button(text="Salir", command=self.No)
             NoBtn.place(x=70, y=390, width=50)
         else:
-            WarningLbl = Label(text = "Varios Errores encontrados")
+            WarningLbl = Label(text = "Varios Errores")
             WarningLbl.place(x=10, y = 370)
             self.master.geometry('600x395')
+            lblN = tk.Label()
             lblD = tk.Label()
             lblH = tk.Label()
-            lblP = tk.Label()
             lblC = tk.Label()
             lblDist = tk.Label()
             lblCajas = tk.Label()
@@ -261,15 +286,15 @@ class Simulador:
             lblTmar = tk.Label()
             lblTpago= tk.Label()
 
+            if not BoolName:
+                lblN['text'] = "Error Ingresando nombre"
+            lblN.place(x=285, y=10)
             if not BoolDesc:
                 lblD['text'] = 'Error en la Descripcion ingresada.'
-            lblD.place(x=285, y=10)
+            lblD.place(x=285, y=40)
             if not BoolHoras:
                 lblH['text']="Error en las horas ingresadas, debe ser mayor que 0."
-            lblH.place(x=285,y=40)
-            if not BoolPeriodos:
-                lblP['text']="Error en numero de periodos, debe ser mayor que 0."
-            lblP.place(x=285,y=70)
+            lblH.place(x=285,y=50)
             if not BoolClientes:
                 lblC['text']="Error en la cantidad de clientes, debe ser mayor que 0."
             lblC.place(x=285,y=100)
