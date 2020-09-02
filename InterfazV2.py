@@ -20,7 +20,7 @@ def retornar():
     app = Simulador(root,nombre,desc,horas,clientes,distr,cajas,min,max,ts,tm,tp)
     root.mainloop()
     print(app.Horas)
-    lista = [Desc, Horas, Periodos, Clientes, Minprod, Maxprod, Tsel, Tmar, Tpago, Distrib, CAJAS]
+    lista = [Desc, Horas, Clientes, Minprod, Maxprod, Tsel, Tmar, Tpago, Distrib, CAJAS]
     return lista
 
 class Simulador:
@@ -267,9 +267,9 @@ class Simulador:
             print("Simulando")
             self.master.geometry('280x430')
             LabelSim = Label(text="Simulacion en proceso.")
-            LabelSim.place(x=10, y=370)
+            LabelSim.place(x=150, y=370)
             NoBtn = tk.Button(text="Salir", command=self.No)
-            NoBtn.place(x=70, y=390, width=50)
+            NoBtn.place(x=170, y=390, width=50)
         else:
             WarningLbl = Label(text = "Varios Errores")
             WarningLbl.place(x=10, y = 370)
