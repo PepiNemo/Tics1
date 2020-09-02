@@ -63,7 +63,7 @@ for i in range(10):  # i =Intervalos
 
     # Temporizador que indica cada cuanto entra un nuevo Cliente
     #print(float((DistribucionPorcentual[i]/100)))
-    TPEntraCliente = 3600 // (NumeroTotalClientes*DistribucionPorcentual[i]/100)
+    TPEntraCliente = 3600 // (NumeroTotalClientes*(DistribucionPorcentual[i]/100))
 
     # Para que el contador de tiempo del intervalo comienze a contar considerando el tiempo transcurrido
     if(i > 0):
@@ -82,7 +82,7 @@ for i in range(10):  # i =Intervalos
             NuevoCliente = Cliente.Cliente(TPSeleccionProducto,MinimoDeProductos,MaximoDeProductos)
             ClientesSeleccionando.append(NuevoCliente)
             TPEntraCliente = 3600 // (NumeroTotalClientes *
-                                      DistribucionPorcentual[i])
+                                      DistribucionPorcentual[i]/100)
 
         # Quitar 1 segundos a los clientes seleccionando, para dps ir a Caja (Temporizador e InsertarCliente)
         TemporizadorClientes(ClientesSeleccionando, Cajas,
