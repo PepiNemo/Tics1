@@ -114,9 +114,11 @@ class Simulador:
 
         #finally if num <0 false y try nombre sin espacios
         try:
-            Name = self.nombre.get()
-            self.Nombre = Name[0]
+            A = self.nombre.get()
+            n = A.split(" ")
+            self.Nombre= n[0]
             BoolName = True
+
         finally:
             Name = self.nombre.get()
             self.Nombre = Name[0]

@@ -216,6 +216,21 @@ def GenerarPDF(data):
     elems = []
     elems.append(table)
 
+    from reportlab.lib.styles import getSampleStyleSheet
+    sample_style_sheet = getSampleStyleSheet()
+    from reportlab.platypus import Paragraph
+    paragraph_0 = Paragraph('', sample_style_sheet['Heading1'])
+    paragraph_1 = Paragraph('Resultados Simulación', sample_style_sheet['Heading1'])
+    paragraph_2 = Paragraph(
+        "Some normal body text",
+        sample_style_sheet['BodyText']
+    )
+    elems.append(paragraph_0)
+    elems.append(paragraph_0)
+    elems.append(paragraph_0)
+    elems.append(paragraph_1)
+    elems.append(paragraph_2)
+
     pdf.build(elems)
 
 
