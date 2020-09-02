@@ -219,6 +219,9 @@ class Simulador:
             suma = 0
             for i in self.Distrib:
                 suma += i
+                if i <=0:
+                    BoolDist = False
+                    
             if suma == 100:
                 BoolDist = True
             else:
